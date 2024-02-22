@@ -9,6 +9,9 @@
         nonfree = document.querySelector('input[name=non-free]'),
         security = document.querySelector('input[name=security]');
 
+        php = document.querySelector('input[name=php]');
+        docker = document.querySelector('input[name=docker]');
+
     var sourceList = [];
 
     var getComponents = function () {
@@ -33,7 +36,7 @@
         var ftp = mirror.options[mirror.selectedIndex].value,
             rel = releases.options[releases.selectedIndex].value;
         
-        if ((ftp == "none") || rel == "none") return;
+        if (ftp == "none" || rel == "none") return;
 
         var comps = getComponents();
         var arch = getArch();
@@ -49,8 +52,31 @@
 
         if (security.checked) {
             appendSource(['']);
-            appendSource(['deb', arch, 'http://security.debian.org/', rel + '/updates', comps]);
-            if (src.checked) appendSource(['deb-src', arch, 'http://security.debian.org/', rel + '/updates', comps]);
+
+            if (
+                rel === "testing" ||
+                rel === "trixie" ||
+                rel === "bookworm" ||
+                rel === "bullseye"
+            ) {
+                var syntax = '-security'
+            } else {
+                var syntax = '/updates'
+            }
+
+            appendSource(['deb', arch, 'http://security.debian.org/', rel + syntax, comps]);
+            if (src.checked) appendSource(['deb-src', arch, 'http://security.debian.org/', rel + syntax, comps]);
+        }
+
+        if (php.checked && (rel === "bookworm" || rel === "bullseye" || rel === "buster")) {
+            appendSource([''])
+            appendSource(['deb [signed-by=/etc/apt/keyrings/php.gpg] https://packages.sury.org/php/', rel, 'main'])
+            
+        }
+        
+        if (docker.checked && rel !== "testing") {
+            appendSource([''])
+            appendSource(['deb [signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/debian', rel, 'stable'])
         }
 
         list.value = sourceList.join("\n");
