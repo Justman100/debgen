@@ -7,7 +7,7 @@
         "dev": "yarn webpack-dev-server --config webpack.config.js"
     },
     "keywords": [],
-    "author": "Phrase / Memsource GmbH",
+    "author": "Kieron & Justman10000",
     "license": "MIT",
     "dependencies": {
         "i18next": "^23.10.0",
