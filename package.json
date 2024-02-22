@@ -3,8 +3,8 @@
     "version": "0.0.1",
     "description": "",
     "scripts": {
-        "build": "webpack --config webpack.config.js",
-        "dev": "webpack-dev-server --config webpack.config.js"
+        "build": "yarn webpack --config webpack.config.js",
+        "dev": "yarn webpack-dev-server --config webpack.config.js"
     },
     "keywords": [],
     "author": "Phrase / Memsource GmbH",
