@@ -74,7 +74,7 @@
             
         }
         
-        if (docker.checked && rel !== "testing") {
+        if (docker.checked && rel !== "testing" && rel !== "trixie") {
             appendSource([''])
             appendSource(['deb [signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/debian', rel, 'stable'])
         }

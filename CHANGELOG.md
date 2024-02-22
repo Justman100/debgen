@@ -1,4 +1,7 @@
-# v2.0.0
+# v2.0.5 (22.02.2024)
+- Docker also not supports trixie
+
+# v2.0.0 (22.02.2024)
 ## New
 - Added releases Linux Debian 12 (Bookworm) and 13 (Trixie)
 - Added repo testing
