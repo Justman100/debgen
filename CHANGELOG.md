@@ -1,3 +1,8 @@
+# v2.1.0 (23.02.2024)
+- Added PostgreSQL repository
+- Removed lock file
+- Removed Clipboard.js library
+
 # v2.0.5 (22.02.2024)
 - Docker also not supports trixie
 

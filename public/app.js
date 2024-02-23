@@ -11,6 +11,7 @@
 
         php = document.querySelector('input[name=php]');
         docker = document.querySelector('input[name=docker]');
+        postgres = document.querySelector('input[name=postgres]');
 
     var sourceList = [];
 
@@ -77,6 +78,11 @@
         if (docker.checked && rel !== "testing" && rel !== "trixie") {
             appendSource([''])
             appendSource(['deb [signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/debian', rel, 'stable'])
+        }
+
+        if (postgres.checked && (rel === "trixie" || rel === "bookworm" || rel === "bullseye" || rel === "buster")) {
+            appendSource([''])
+            appendSource(['deb https://apt.postgresql.org/pub/repos/apt', rel + '-pgdg main'])
         }
 
         list.value = sourceList.join("\n");
