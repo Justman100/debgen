@@ -1,3 +1,7 @@
+# v2.2.0 (27.03.2024)
+- Updated dependencies to latest versions
+- Adding/fixing description
+
 # v2.1.0 (23.02.2024)
 - Added PostgreSQL repository
 - Removed lock file
