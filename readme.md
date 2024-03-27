@@ -1,4 +1,4 @@
-The source code for [debgen.xyz](https://debgen.xyz)
+The fork of [the original debgen](https://github.com/saltandvinegarcrisps/debgen), since it no longer gets updates 🤷
 
 # Setup
 
