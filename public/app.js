@@ -26,7 +26,7 @@
 
     var getArch = function () {
         var value = arch.options[arch.selectedIndex].value;
-        return value ? '[arch=' + value + ']' : '';
+        return value ? '[arch=' + value.toLowerCase() + ']' : '';
     };
 
     var appendSource = function (source) {
@@ -42,48 +42,69 @@
         var comps = getComponents();
         var arch = getArch();
 
+        var isExperimental = rel === "experimental",
+            isSid = rel === "sid",
+            isTrixie = rel === "trixie",
+            isBookworm = rel === "bookworm",
+            isBullseye = rel === "bullseye",
+            isBuster = rel === "buster"
+
         appendSource(['deb', arch, ftp, rel, comps]);
         if (src.checked) appendSource(['deb-src', arch, ftp, rel, comps]);
 
-        if (releases.options[releases.selectedIndex].hasAttribute('data-updates')) {
+        if ((
+            !isExperimental &&
+            !isSid
+        ) && releases.options[releases.selectedIndex].hasAttribute('data-updates')) {
             appendSource(['']);
             appendSource(['deb', arch, ftp, rel + '-updates', comps]);
             if (src.checked) appendSource(['deb-src', arch, ftp, rel + '-updates', comps]);
         }
 
         if (security.checked) {
-            appendSource(['']);
+            if (
+                !isExperimental &&
+                !isSid
+            ) appendSource([''])
 
             if (
-                rel === "testing" ||
-                rel === "trixie" ||
-                rel === "bookworm" ||
-                rel === "bullseye"
+                isTrixie ||
+                isBookworm ||
+                isBullseye
             ) {
                 var syntax = '-security'
             } else {
                 var syntax = '/updates'
             }
 
-            appendSource(['deb', arch, 'http://security.debian.org/', rel + syntax, comps]);
-            if (src.checked) appendSource(['deb-src', arch, 'http://security.debian.org/', rel + syntax, comps]);
+            if (
+                !isExperimental &&
+                !isSid
+            ) {
+                appendSource(['deb', arch, 'http://security.debian.org/', rel + syntax, comps]);
+                if (src.checked) appendSource(['deb-src', arch, 'http://security.debian.org/', rel + syntax, comps]);
+            }
         }
 
-        if (php.checked && (rel === "bookworm" || rel === "bullseye" || rel === "buster")) {
-            appendSource([''])
-            appendSource(['deb [signed-by=/etc/apt/keyrings/php.gpg] https://packages.sury.org/php/', rel, 'main'])
-            
-        }
+        if (php.checked && (
+            isBookworm ||
+            isBullseye)) {
+                appendSource([''])
+                appendSource(['deb [signed-by=/etc/apt/keyrings/php.gpg] https://packages.sury.org/php/', rel, 'main'])
+            }
         
-        if (docker.checked && rel !== "testing" && rel !== "trixie") {
-            appendSource([''])
-            appendSource(['deb [signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/debian', rel, 'stable'])
-        }
+        if (docker.checked && (
+            !isExperimental &&
+            !isSid &&
+            !isTrixie)) {
+                appendSource([''])
+                appendSource(['deb [signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/debian', rel, 'stable'])
+            }
 
-        if (postgres.checked && (rel === "trixie" || rel === "bookworm" || rel === "bullseye" || rel === "buster")) {
-            appendSource([''])
-            appendSource(['deb https://apt.postgresql.org/pub/repos/apt', rel + '-pgdg main'])
-        }
+        if (postgres.checked && !isExperimental) {
+                appendSource([''])
+                appendSource(['deb https://apt.postgresql.org/pub/repos/apt', rel + '-pgdg main'])
+            }
 
         list.value = sourceList.join("\n");
         sourceList = [];
@@ -91,4 +112,4 @@
 
     button.addEventListener('click', generate, false);
     generate();
-})();
+})()
